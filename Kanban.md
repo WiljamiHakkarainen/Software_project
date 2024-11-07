@@ -4,32 +4,32 @@
 
 | ID  | Tehtävä                    | Status   | Kuvaus                                                                                  |
 |-----|-----------------------------|----------|----------------------------------------------------------------------------------------|
-| 4   | Kokeile piirtoa             | backlog  | Testaa peliruudukon ja Tetrimino-palikoiden piirtäminen ruudukolle.                    |
-| 5   | Tee näppäimistön luku       | backlog  | Varmista, että nuolinäppäimet toimivat Tetriminojen liikkeiden ja pyöritysten ohjaukseen. |
-| 6   | Kokeile ääniefektejä        | backlog  | Lisää ja testaa ääniefektit, kuten liikkeille ja rivien poistolle.                     |
-| 7   | Lisää pisteiden laskenta    | backlog  | Lisää pisteytysjärjestelmä, joka laskee pisteet poistettujen rivien määrän mukaan.     |
-| 8   | Lisää tasojen eteneminen    | backlog  | Lisää tason nousu, joka lisää pelin nopeutta tietyn pistemäärän jälkeen.               |
-| 9   | Lisää pelin lopetus         | backlog  | Lisää logiikka pelin päättymiselle, kun peliruudukko täyttyy eikä uusia palikoita voi sijoittaa. |
-| 10  | Lisää taustamusiikki        | backlog  | Lisää taustamusiikki, joka soi pelin aikana.                                           |
-| 11  | Testaa pelin mekaniikat     | backlog  | Testaa Tetriminojen liikkuminen, pyöräyttäminen ja pisteiden laskenta.                 |
-| 12  | Testaa pelin toiminnallisuus| backlog  | Testaa eri tasot ja pisteytyksen toimivuus.                                            |
-| 13  | Testaa pelin Käyttöliittymä | backlog  | Varmista, että kaikki käyttöliittymän elementit näkyvät oikein.                        |
+| 4   | Kokeile piirtoa             | Backlog  | Testaa peliruudukon ja Tetrimino-palikoiden piirtäminen ruudukolle.                    |
+| 5   | Tee näppäimistön luku       | Backlog  | Varmista, että nuolinäppäimet toimivat Tetriminojen liikkeiden ja pyöritysten ohjaukseen. |
+| 6   | Kokeile ääniefektejä        | Backlog  | Lisää ja testaa ääniefektit, kuten liikkeille ja rivien poistolle.                     |
+| 7   | Lisää pisteiden laskenta    | Backlog  | Lisää pisteytysjärjestelmä, joka laskee pisteet poistettujen rivien määrän mukaan.     |
+| 8   | Lisää tasojen eteneminen    | Backlog  | Lisää tason nousu, joka lisää pelin nopeutta tietyn pistemäärän jälkeen.               |
+| 9   | Lisää pelin lopetus         | Backlog  | Lisää logiikka pelin päättymiselle, kun peliruudukko täyttyy eikä uusia palikoita voi sijoittaa. |
+| 10  | Lisää taustamusiikki        | Backlog  | Lisää taustamusiikki, joka soi pelin aikana.                                           |
+| 11  | Testaa pelin mekaniikat     | Backlog  | Testaa Tetriminojen liikkuminen, pyöräyttäminen ja pisteiden laskenta.                 |
+| 12  | Testaa pelin toiminnallisuus| Backlog  | Testaa eri tasot ja pisteytyksen toimivuus.                                            |
+| 13  | Testaa pelin Käyttöliittymä | Backlog  | Varmista, että kaikki käyttöliittymän elementit näkyvät oikein.                        |
 
 
 ## In Progress (Työn alla)
 
-| ID  | Tehtävä                    | Status     | Kuvaus                                                                                  |
-|-----|-----------------------------|------------|----------------------------------------------------------------------------------------|
-| 1   | Suunnittele käyttöliittymä  | backlog  | Luo pelin käyttöliittymän rakenne, mukaan lukien peliruudukko, pisteet ja painikkeet.  |
-| 2   | Kuva layoutista             | backlog  | Tee layout-kuva peliruudusta, pisteiden laskurista ja muista elementeistä.             |
-|     |                             |            |                                                                                         |
+| ID  | Tehtävä                    | Status       | Kuvaus                                                                              |
+|-----|----------------------------|-------------|--------------------------------------------------------------------------------------|
+| 1   | Suunnittele käyttöliittymä | In Progress | Luo pelin käyttöliittymän rakenne, mukaan lukien peliruudukko, pisteet ja painikkeet.|
+| 2   | Kuva layoutista            | In Progress | Tee layout-kuva peliruudusta, pisteiden laskurista ja muista elementeistä.           |
+|     |                            |             |                                                                                      |
 
 ## Done (Valmiit tehtävät)
 
-| ID  | Tehtävä                    | Status     | Kuvaus                                                                                  |
-|-----|-----------------------------|------------|----------------------------------------------------------------------------------------|
-| 3   | Asenna Pygame               | backlog  | Asenna Pygame-kirjasto ja varmista, että se toimii oikein kehitysympäristössä.         |
-|     |                             |            |                                                                                         |
+| ID  | Tehtävä                    | Status     | Kuvaus                                                                                |
+|-----|----------------------------|------------|---------------------------------------------------------------------------------------|
+| 3   | Asenna Pygame              | Done       | Asenna Pygame-kirjasto ja varmista, että se toimii oikein kehitysympäristössä.        |
+|     |                            |            |                                                                                       |
 
 ## Projektin aikataulu
 

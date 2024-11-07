@@ -59,44 +59,33 @@ Tämä vaatimusmäärittely kuvaa Tetris-pelin vaatimukset ja toiminnallisuudet.
   - **Pelaajan tulostaulukko**: Näytä parhaat tulokset.
   - **Uudet ääniefektit ja musiikki**: Lisää uusia ääniä ja taustamusiikkeja eri pelitiloihin.
 
-## 4. Testausvaatimukset
+### 3.5. Testausvaatimukset
 - **Yksikkötestaus**: Testaa Tetriminojen liikkuminen, pyöräyttäminen ja pisteiden laskenta.
 - **Toiminnallisuuden testaus**: Testaa eri tasot ja pisteytyksen toimivuus.
 - **Käyttöliittymän testaus**: Varmista, että kaikki käyttöliittymän elementit näkyvät oikein.
 
+## 4. Asennusohjeet
+
+Pelin asentaminen edellyttää, että tietokoneella on Python 3.8 tai uudempi asennettuna.
+
+###  1: Asenna Python
+Jos Python ei ole vielä asennettu, lataa se https://www.python.org/downloads/ ja asenna se.
+
+### 2: Asenna Pygame
+Pygame on Pythonin kirjasto, joka mahdollistaa pelin kehittämisen. Asenna se syöttämällä terminaalin komento: pip install pygame
+
+### 3: Hae Tetris-pelin lähdekoodi Githubista
+
+Pelin lähdekoodin saa täältä : https://github.com/WiljamiHakkarainen/Software_project
+
+### 4: kopioi koodit kansioon ja aja pelin main-tiedosto terminaalissa
+
+Syötä terminaaliin esimerkiksi: 
+1. cd tetris_game
+2. python main.py
 
 
-## Backlog
-| ID  | Tehtävä                    | Status   | Kuvaus                                                                                  |
-|-----|-----------------------------|----------|----------------------------------------------------------------------------------------|
-| 1   | Suunnittele käyttöliittymä  | backlog  | Luo pelin käyttöliittymän rakenne, mukaan lukien peliruudukko, pisteet ja painikkeet.  |
-| 2   | Kuva layoutista             | Backlog  | Tee layout-kuva peliruudusta, pisteiden laskurista ja muista elementeistä.             |
-| 3   | Asenna Pygame               | Backlog  | Asenna Pygame-kirjasto ja varmista, että se toimii oikein kehitysympäristössä.         |
-| 4   | Kokeile piirtoa             | Backlog  | Testaa peliruudukon ja Tetrimino-palikoiden piirtäminen ruudukolle.                    |
-| 5   | Testaa näppäimistön luku    | Backlog  | Varmista, että nuolinäppäimet toimivat Tetriminojen liikkeiden ja pyöritysten ohjaukseen. |
-| 6   | Kokeile ääniefektejä        | Backlog  | Lisää ja testaa ääniefektit, kuten liikkeille ja rivien poistolle.                     |
-| 7   | Lisää pisteiden laskenta    | Backlog  | Lisää pisteytysjärjestelmä, joka laskee pisteet poistettujen rivien määrän mukaan.     |
-| 8   | Lisää tasojen eteneminen    | Backlog  | Lisää tason nousu, joka lisää pelin nopeutta tietyn pistemäärän jälkeen.               |
-| 9   | Lisää pelin lopetus         | Backlog  | Lisää logiikka pelin päättymiselle, kun peliruudukko täyttyy eikä uusia palikoita voi sijoittaa. |
-| 10  | Lisää taustamusiikki        | Backlog  | Lisää taustamusiikki, joka soi pelin aikana.                                           |
 
-
-
-
-## Kanban Taulun status-kuvaukset
-
-- **Backlog**: Kaikki tehtävät, jotka odottavat tekemistä.
-- **TODO**: Tehtävät, jotka ovat työn alla.
-- **Done**: Valmiit tehtävät.
-
-### Leiska (Layout) Kuva
+## Leiska (Layout) Kuva
 Kesken
-
-
-## Projektin aikataulu
-
-- **28.10.2024**: Aiheen valinta ja projektin sääntöjen selvittely. Siivosin oman GitHubini, loin uuden repositorion ja valitsin projektin aiheen. Esimerkki-ideoiden perusteella päätin toteuttaa Tetris-pelin Pythonin Pygame-kirjastolla. *(4h)*
-
-- **31.10.2024**: Markdown-dokumentin laadinta projektin dokumentointia varten. Dokumenttiin lisättiin vaatimusmäärittely, projektin tehtävälista backlog-tauluna sekä aikataulu, johon pidän kirjaa omasta ajankäytöstäni. *(4h)*
-
 

@@ -87,6 +87,6 @@ Syötä terminaaliin esimerkiksi:
 
 
 ## Aluksi suunniteltu pelinäkymä
-![GAME UI Sketch](images/Tetris_UI.jpg)
+![GAME UI Sketch](Images/Tetris_UI.jpg)
 
 

@@ -86,6 +86,7 @@ Syötä terminaaliin esimerkiksi:
 
 
 
-## Leiska (Layout) Kuva
-Kesken
+## Aluksi suunniteltu pelinäkymä
+![GAME UI Sketch](images/Tetris_UI.jpg)
+
 

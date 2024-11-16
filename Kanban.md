@@ -20,7 +20,7 @@
 | ID  | Tehtävä                    | Status      | Kuvaus                                                                              |
 |-----|----------------------------|-------------|--------------------------------------------------------------------------------------|
 | 15  | Parantele pelin ulkonäköä  | In Progress | Taustan, tetriminoiden ja muiden elementtien ulkonäön parantelu                      |
-| 14  | Tetriminoiden logiikka     | In Progress | Tetriminoiden täytyy jäädä osuessa, generoida ylhäältä aina uuden ja poistaa täydet rivit   |
+| 17  | Tee Game over -näkymä      | In Progress | Varmista, että nuolinäppäimet toimivat Tetriminojen liikkeiden ja pyöritysten ohjaukseen. |
 |     |                            |             |                                                                                      |
 
 ## Done (Valmiit tehtävät)
@@ -32,6 +32,8 @@
 | 2   | Kuva layoutista            | Done       | Tee layout-kuva peliruudusta, pisteiden laskurista ja muista elementeistä.           |
 | 4   | Kokeile piirtoa            | Done       | Testaa peliruudukon ja Tetrimino-palikoiden piirtäminen ruudukolle.                  |
 | 5   | Tee näppäimistön luku      | Done       | Varmista, että nuolinäppäimet toimivat Tetriminojen liikkeiden ja pyöritysten ohjaukseen. |
+| 16  | Haamutetriminopalikka      | Done       | Palikan pudotessa täytyy alhaalla näkyä palikan muoto siinä kohdalla, mihin se putoaisi.      |
+| 14  | Tetriminoiden logiikka     | Done       | Tetriminoiden täytyy jäädä osuessa, generoida ylhäältä aina uuden ja poistaa täydet rivit   |
 |     |                            |            |                                                                                       |
 
 ## Projektin aikataulu
@@ -44,3 +46,4 @@
 - **11.11.2024**: Suunnittelin ja toteutin layout-kuvan pelin päänäkymälle powerpointilla. Lisäsin kuvan sekä projektin dokumentaatioon, että omaan kansioonsa repositoriossa. *(n. 3 tuntia)*
 - **14.11.2024**: Toteutin ensimmäisen version pelistä. päätin tähän mennessä jakaa pelin koodin kolmeen tiedostoon. Yksi pelin main loopille, yksi funktioille ja yksi tetriminoluokalle.
 Pelissä on tällä hetkellä tetriminot, pelin ruudukko sekä vähän alkuperäistä piirustusta muistuttava taustaväri. Tetriminoita voi liikutella ja pyöritellä, tosin peli ei koskaan lopu, vaan palikoiden täyttyessä ylös asti peliä ei voi enää pelata, koska palikat ovat päällekäin. Tetriminoiden logiikassa saattaa olla korjaamisen varaa. Pelissä on nyt 5 fps tahti, joka ei muutu. Rivien poisto toimii. Lisään seuraavalla kerralla toiminnon, jolla space-napilla saa palikan suoraan alas, kun se jäi tekemättä tällä kertaa. *(n. 4 tuntia)*
+- **16.11.2024**: Parantelin vähän pelin toiminnallisuutta. Lisäsin haamupalikan sinne, mihin palikka on laskeutumassa ja parantelin vähän törmäyslogiikkaa. Lisäsin hard drop -funktion spacebar -nappiin niin kuin viimeksi mainitsin. Lisäsin myös logiikan pelin loppumiselle sekä jonkinlaisen version game over-näkymästä pelin häviämisen yhteydessä. Erotin pelin loppumiseen liittyvän koodin omaan tiedostoonsa, jotta main.py pysyisi edes jossain määrin kompaktina. *(n. 3 tuntia)*

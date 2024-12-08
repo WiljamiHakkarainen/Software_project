@@ -1,33 +1,13 @@
 import pygame
 import random
 
-# Tetrimino shapes
-TETRIMINOS = [
-    [[1, 1, 1, 1]],  # I
-    [[1, 1], [1, 1]],  # O
-    [[0, 1, 0], [1, 1, 1]],  # T
-    [[0, 1, 1], [1, 1, 0]],  # S
-    [[1, 1, 0], [0, 1, 1]],  # Z
-    [[1, 0, 0], [1, 1, 1]],  # J
-    [[0, 0, 1], [1, 1, 1]]   # L
-]
-
-# Tetrimino colors
-COLORS = [
-    (0, 255, 255),  # Cyan for I
-    (255, 255, 0),  # Yellow for O
-    (128, 0, 128),  # Purple for T
-    (0, 255, 0),    # Green for S
-    (255, 0, 0),    # Red for Z
-    (0, 0, 255),    # Blue for J
-    (255, 165, 0)   # Orange for L
-]
+from constants import TETRIMINOS, TETROMINO_COLORS, SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE
 
 class Tetrimino:
     def __init__(self):
         # Random shape and color
         self.shape = random.choice(TETRIMINOS)
-        self.color = random.choice(COLORS)
+        self.color = random.choice(TETROMINO_COLORS)
         
         # Starting position of the Tetrimino on the board
         self.x = 3  

@@ -1,8 +1,6 @@
 import pygame
 
-# Color Constants
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
+from constants import WHITE
 
 # Testing out a gradient Background (color fades from for example grey to black)
 def draw_gradient_background(screen, color1, color2):

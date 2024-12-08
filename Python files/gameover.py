@@ -1,12 +1,7 @@
 import pygame
+from constants import BACKGROUND_COLOR, TEXT_COLOR, BUTTON_COLOR, BUTTON_HOVER_COLOR, BUTTON_TEXT_COLOR
 
 def display_game_over(screen):
-    # Colors
-    BACKGROUND_COLOR = (50, 50, 50)  # Dark grey background
-    TEXT_COLOR = (200, 200, 200)       # Soft red for the "Game Over" text
-    BUTTON_COLOR = (100, 100, 255)   # Muted blue for buttons
-    BUTTON_HOVER_COLOR = (150, 150, 255)  # Lighter blue for hover
-    BUTTON_TEXT_COLOR = (255, 255, 255)  # White text for buttons
 
     # Fonts
     pygame.font.init()

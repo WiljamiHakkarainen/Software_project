@@ -2,14 +2,10 @@ import pygame
 from tetrimino import Tetrimino
 from functions import draw_gradient_background, draw_board, clear_rows
 from gameover import display_game_over
+from constants import SCREEN_HEIGHT, SCREEN_WIDTH, BLOCK_SIZE, SCREEN
 
 pygame.init()
 
-# Constants
-SCREEN_WIDTH = 300
-SCREEN_HEIGHT = 600
-BLOCK_SIZE = 30
-SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Tetris")
 
 # Empty game board (10 columns, 20 rows)

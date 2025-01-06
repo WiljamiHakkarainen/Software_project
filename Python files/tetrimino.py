@@ -1,101 +1,90 @@
 import pygame
 import random
-
-from constants import TETRIMINOS, TETROMINO_COLORS, SCREEN_WIDTH, SCREEN_HEIGHT, BLOCK_SIZE
+from constants import GAME_AREA_WIDTH, BLOCK_SIZE, SIDEBAR_WIDTH, TETROMINO_COLORS, TETRIMINOS
 
 class Tetrimino:
     def __init__(self):
-        # Random shape and color
         self.shape = random.choice(TETRIMINOS)
         self.color = random.choice(TETROMINO_COLORS)
-        
-        # Starting position of the Tetrimino on the board
-        self.x = 3  
-        self.y = 0 
+        self.x = GAME_AREA_WIDTH // BLOCK_SIZE // 2 - len(self.shape[0]) // 2
+        self.y = 0
 
-    # Method that draws the Tetrimino
+    # Draws the Tetrimino on the screen.
     def draw(self, screen, block_size, board):
         for row_idx, row in enumerate(self.shape):
             for col_idx, cell in enumerate(row):
-                if cell:  # Only draw blocks that are part of the shape
-                    pygame.draw.rect(
-                        screen,
-                        self.color,
-                        ((self.x + col_idx) * block_size, (self.y + row_idx) * block_size, block_size, block_size)
-                    )
+                if cell:
+                    x_pos = SIDEBAR_WIDTH + (self.x + col_idx) * block_size
+                    y_pos = (self.y + row_idx) * block_size
+                    pygame.draw.rect(screen, self.color, (x_pos, y_pos, block_size, block_size))
 
-        # Draw the ghost block (shadow)
-        ghost_y = self.get_ghost_position(board)
-        self.draw_ghost(screen, block_size, ghost_y)
-
-    # Method that simulates dropping the Tetrimino to the lowest position without collision
-    def get_ghost_position(self, board):
+    # Draws the ghost block to show where the Tetrimino would land.
+    def draw_ghost(self, screen, block_size, board):
         ghost_y = self.y
-        while not self.check_collision_at_position(board, self.x, ghost_y + 1):
+        # Moves the ghost piece down until it collides
+        while not self.check_collision(board, x_offset=0, y_offset=ghost_y + 1 - self.y):  # Keep moving down
             ghost_y += 1
-        return ghost_y
 
-     # Method that checks for collision at a specific position (new_x, new_y)
-    def check_collision_at_position(self, board, new_x, new_y):
+        # Draws the ghost block in a bright cyan color (light blue-green)
         for row_idx, row in enumerate(self.shape):
             for col_idx, cell in enumerate(row):
                 if cell:
-                    new_x_pos = new_x + col_idx
-                    new_y_pos = new_y + row_idx
-                    if new_y_pos >= len(board) or new_x_pos < 0 or new_x_pos >= len(board[0]) or board[new_y_pos][new_x_pos]:
+                    x_pos = SIDEBAR_WIDTH + (self.x + col_idx) * block_size
+                    y_pos = (ghost_y + row_idx) * block_size
+                    pygame.draw.rect(screen, (169, 169, 169), (x_pos, y_pos, block_size, block_size))  # Light cyan color
+    # Moving the Tetrimino
+    def move_down(self, board):
+        if not self.check_collision(board, y_offset=1):
+            self.y += 1
+        else:
+            self.place_on_board(board)
+            return False  # Stop the piece from moving further down
+        return True  # Continue moving down
+
+    def move_left(self, board):
+        if not self.check_collision(board, x_offset=-1):
+            self.x -= 1
+
+    def move_right(self, board):
+        if not self.check_collision(board, x_offset=1):
+            self.x += 1
+
+    def rotate(self, board):
+        new_shape = [list(row) for row in zip(*self.shape[::-1])]
+        original_shape = self.shape
+        self.shape = new_shape
+        if self.check_collision(board):
+            self.shape = original_shape  # Reverts if collision occurs
+
+    def check_collision(self, board, x_offset=0, y_offset=0):
+        for row_idx, row in enumerate(self.shape):
+            for col_idx, cell in enumerate(row):
+                if cell:
+                    new_x = self.x + col_idx + x_offset
+                    new_y = self.y + row_idx + y_offset
+
+                    # Checks if out of bounds or overlapping with an existing block
+                    if (
+                        new_x < 0 or
+                        new_x >= len(board[0]) or
+                        new_y >= len(board) or
+                        (new_y >= 0 and board[new_y][new_x])
+                    ):
                         return True
         return False
-    
-    # Method for drawing the "ghost" of the Tetrimino at the ghost position
-    def draw_ghost(self, screen, block_size, ghost_y):
-        for row_idx, row in enumerate(self.shape):
-            for col_idx, cell in enumerate(row):
-                if cell:
-                    # Semi-transparent color for the ghost
-                    pygame.draw.rect(
-                        screen,
-                        (200, 200, 200),  # Light gray color for the ghost
-                        ((self.x + col_idx) * block_size, (ghost_y + row_idx) * block_size, block_size, block_size)
-                    )
-                    pygame.draw.rect(
-                        screen,
-                        (255, 255, 255),  # Outline color for the ghost
-                        ((self.x + col_idx) * block_size, (ghost_y + row_idx) * block_size, block_size, block_size), 1
-                    )
 
-    def move_down(self):
-        self.y += 1
-
-    def move_left(self):
-        self.x -= 1
-
-    def move_right(self):
-        self.x += 1
-
-    def rotate(self):
-        # Rotate the shape 90 degrees
-        self.shape = [list(row) for row in zip(*self.shape[::-1])]
-    def hard_drop(self, board):
-     while not self.check_collision(board):
-        self.move_down()  # Fully drops the block down
-
-
-    def check_collision(self, board):
-        for row_idx, row in enumerate(self.shape):
-           for col_idx, cell in enumerate(row):
-            if cell:
-                # Calculate the prospective position of the block
-                new_x = self.x + col_idx
-                new_y = self.y + row_idx + 1  # Just add 1 to y for downward movement
-
-                # Check if the block is out of bounds or colliding with existing blocks
-                if new_y >= len(board) or new_x < 0 or new_x >= len(board[0]) or board[new_y][new_x]:
-                    return True
-        return False
-
-
+    # Places the Tetrimino on the game board.
     def place_on_board(self, board):
         for row_idx, row in enumerate(self.shape):
             for col_idx, cell in enumerate(row):
                 if cell:
-                    board[self.y + row_idx][self.x + col_idx] = self.color
+                    new_x = self.x + col_idx
+                    new_y = self.y + row_idx
+                    if 0 <= new_x < len(board[0]) and 0 <= new_y < len(board):
+                        board[new_y][new_x] = self.color
+
+    # Drops the Tetrimino to the lowest possible position when pressing space.
+    def hard_drop(self, board):
+        while not self.check_collision(board, y_offset=1):
+            self.y += 1
+        self.place_on_board(board)

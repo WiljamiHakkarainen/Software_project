@@ -49,7 +49,7 @@ def display_game_over(screen):
             # Change button color on hover
             button_color = BUTTON_HOVER_COLOR if button.collidepoint(mouse_pos) else BUTTON_COLOR
             pygame.draw.rect(screen, button_color, button, border_radius=10)
-            pygame.draw.rect(screen, (0, 0, 0), button, 2, border_radius=10)  # Add button border
+            pygame.draw.rect(screen, (0, 0, 0), button, 2, border_radius=10)
 
             # Render button text
             button_text = button_font.render(text, True, BUTTON_TEXT_COLOR)

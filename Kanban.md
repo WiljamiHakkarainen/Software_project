@@ -57,3 +57,4 @@ Pelissä on tällä hetkellä tetriminot, pelin ruudukko sekä vähän alkuperä
 - **8.12.2024**: Kokeilin tehdä sivupalkkia, johon saisi pisteet, seuraavan palikan jne. Ei onnistunut tällä kertaa, joten päädyin vain siistimään vähän koodia siirtämällä koodin kaikki constant-muuttujat omaan tiedostoonsa. (*n. 2 tuntia)*
 
 - **6.1.2025**: siirsin main.py gameloopin määrittelyn tiedostoon functions.py. Lisäsin sivupalkin, johon lisään seuraavalla kerralla tarvittavat UI elementit. Pelin logiikkaa täytyi aika paljon muutella, jotta palkin sai lisättyä rikkomatta pelin toimintaa. (*n. 3 tuntia)
+- **7.1.2025**: Lisäsin sivupalkkiin kaikki UI-elementit, mutta tasokehitys ja pisteet eivät vielä toimi oikein. Pause- ja mutenapit toimivat. (*3 tuntia*)

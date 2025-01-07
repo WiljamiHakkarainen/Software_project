@@ -4,7 +4,7 @@ BLOCK_SIZE = 30
 
 GAME_AREA_WIDTH = 10 * BLOCK_SIZE
 GAME_AREA_HEIGHT = 20 * BLOCK_SIZE
-SIDEBAR_WIDTH = 200
+SIDEBAR_WIDTH = 150
 
 # Total screen dimensions
 SCREEN_WIDTH = GAME_AREA_WIDTH + SIDEBAR_WIDTH
@@ -32,8 +32,17 @@ TETROMINO_COLORS = [
     (0, 0, 255),    # Blue for J
     (255, 165, 0)   # Orange for L
 ]
+
+# Game progression constants
+LINES_PER_LEVEL = 1
+INITIAL_GAME_SPEED = 1000
+MIN_GAME_SPEED = 100
+SPEED_DECREASE_PER_LEVEL = 100
+
 # Colors
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GRAY = (126, 126, 126)
 BACKGROUND_COLOR = (50, 50, 50)  # Dark grey background
 TEXT_COLOR = (200, 200, 200)       # Soft red for the "Game Over" text
 BUTTON_COLOR = (100, 100, 255)   # Muted blue for buttons

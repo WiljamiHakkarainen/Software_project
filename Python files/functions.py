@@ -1,9 +1,21 @@
 import pygame
-from constants import WHITE, SCREEN, SCREEN_HEIGHT, SCREEN_WIDTH, BLOCK_SIZE, GAME_AREA_WIDTH, SIDEBAR_WIDTH, GAME_AREA_HEIGHT
+from constants import WHITE, BLACK, GRAY, SCREEN, SCREEN_HEIGHT, BLOCK_SIZE, GAME_AREA_WIDTH, SIDEBAR_WIDTH, GAME_AREA_HEIGHT, INITIAL_GAME_SPEED, SPEED_DECREASE_PER_LEVEL, MIN_GAME_SPEED, LINES_PER_LEVEL
 from tetrimino import Tetrimino
 from gameover import display_game_over
 
-# Gradient Background (color fades from for example grey to black)
+# Initialize game variables
+lines_cleared = 0  # Number of lines cleared
+level = 1  # Current level
+lines = 0  # Total lines cleared by the player
+paused = False  # Pause state
+game_speed = INITIAL_GAME_SPEED  # Starting game speed
+
+# Update the game speed based on the current level
+def update_game_speed():
+    global game_speed
+    game_speed = max(MIN_GAME_SPEED, INITIAL_GAME_SPEED - (level - 1) * SPEED_DECREASE_PER_LEVEL)
+
+# Gradient Background (color fades from for example gray to black)
 def draw_gradient_background(screen, color1, color2):
     screen_height = screen.get_height()
     for y in range(screen_height):
@@ -25,64 +37,116 @@ def draw_board(screen, board, block_size):
                 pygame.draw.rect(screen, board[row][col], (x_pos, y_pos, block_size, block_size))
             pygame.draw.rect(screen, WHITE, (x_pos, y_pos, block_size, block_size), 1)
 
-
 # Clears the full rows
 def clear_rows(board):
-    new_board = [row for row in board if any(cell == 0 for cell in row)]
-    while len(new_board) < len(board):
+    new_board = [row for row in board if any(cell == 0 for cell in row)]  # Keep non-full rows
+    lines_cleared = len(board) - len(new_board)  # Number of lines cleared
+    while len(new_board) < len(board):  # Add empty rows at the top to replace cleared ones
         new_board.insert(0, [0 for _ in range(len(board[0]))])
-    return new_board
+    return new_board, lines_cleared
 
-# Empty game board (10 columns, 20 rows)
-board = [
-    [0 for _ in range(GAME_AREA_WIDTH // BLOCK_SIZE)]
-    for _ in range(GAME_AREA_HEIGHT // BLOCK_SIZE)
-]
+# Draw Sidebar
+def draw_sidebar(screen, font, score, level, lines, next_tetrimino, paused):
+    pygame.draw.rect(screen, GRAY, (0, 0, SIDEBAR_WIDTH, SCREEN_HEIGHT))
 
-def draw_sidebar(screen):
-    pygame.draw.rect(screen, (50, 50, 50), (0, 0, SIDEBAR_WIDTH, SCREEN_HEIGHT))
-    # Adds any text, stats, or graphics
-    font = pygame.font.Font(None, 24)
-    text = font.render("Sidebar", True, WHITE)
-    screen.blit(text, (10, 10))
+    text = font.render("Next", True, BLACK)
+    screen.blit(text, (SIDEBAR_WIDTH // 2 - text.get_width() // 2, 20))
+    pygame.draw.rect(screen, BLACK, (10, 50, SIDEBAR_WIDTH - 20, 100), 2)
+
+    if next_tetrimino:
+        tetrimino_width = len(next_tetrimino.shape[0])  # Number of columns
+        tetrimino_height = len(next_tetrimino.shape)  # Number of rows
+
+        max_width = min(tetrimino_width, (SIDEBAR_WIDTH - 20) // BLOCK_SIZE)
+        max_height = min(tetrimino_height, 100 // BLOCK_SIZE)
+
+        x_offset = (SIDEBAR_WIDTH - 20 - max_width * BLOCK_SIZE) // 2 + 10
+        y_offset = (100 - max_height * BLOCK_SIZE) // 2 + 50
+
+        for row_idx, row in enumerate(next_tetrimino.shape):
+            for col_idx, cell in enumerate(row):
+                if cell:
+                    x_pos = x_offset + col_idx * BLOCK_SIZE
+                    y_pos = y_offset + row_idx * BLOCK_SIZE
+                    pygame.draw.rect(screen, next_tetrimino.color, (x_pos, y_pos, BLOCK_SIZE, BLOCK_SIZE))
+                    pygame.draw.rect(screen, BLACK, (x_pos, y_pos, BLOCK_SIZE, BLOCK_SIZE), 1)
+
+    labels = ["Score", "Level", "Lines"]
+    values = [score, level, lines]
+    for i, (label, value) in enumerate(zip(labels, values)):
+        y_offset = 170 + i * 50
+        text_label = font.render(label, True, BLACK)
+        text_value = font.render(str(value), True, BLACK)
+        pygame.draw.rect(screen, BLACK, (10, y_offset, SIDEBAR_WIDTH - 20, 40), 2)
+        screen.blit(text_label, (15, y_offset + 5))
+        screen.blit(text_value, (SIDEBAR_WIDTH - 30 - text_value.get_width(), y_offset + 5))
+
+    pygame.draw.rect(screen, BLACK, (10, SCREEN_HEIGHT - 120, SIDEBAR_WIDTH - 20, 40), 2)
+    mute_icon = pygame.image.load("Images/mute_icon.png")
+    mute_icon = pygame.transform.scale(mute_icon, (30, 30))
+    screen.blit(mute_icon, (SIDEBAR_WIDTH // 2 - mute_icon.get_width() // 2, SCREEN_HEIGHT - 115))
+
+    pygame.draw.rect(screen, BLACK, (10, SCREEN_HEIGHT - 60, SIDEBAR_WIDTH - 20, 40), 2)
+    pause_text = font.render("Unpause" if paused else "Pause", True, BLACK)
+    screen.blit(pause_text, (SIDEBAR_WIDTH // 2 - pause_text.get_width() // 2, SCREEN_HEIGHT - 55))
 
 # Main game loop
 def game_loop():
-    global board
+    global board, paused, lines, level, game_speed
+    lines = 0
+    paused = False
     clock = pygame.time.Clock()
+    prev_level = level  # Track the previous level
+
+    drop_timer = 0  # Timer for automatic piece drops
+    board = [
+        [0 for _ in range(GAME_AREA_WIDTH // BLOCK_SIZE)]
+        for _ in range(GAME_AREA_HEIGHT // BLOCK_SIZE)
+    ]
+
     tetrimino = Tetrimino()
+    next_tetrimino = Tetrimino()
 
     while True:
-        # Draws sidebar and game area
-        SCREEN.fill((0, 0, 0))
-        draw_sidebar(SCREEN)
+        SCREEN.fill((0, 0, 0))  # Clear screen before drawing again
+        draw_sidebar(SCREEN, pygame.font.SysFont("Arial", 20), score=0, level=level, lines=lines, next_tetrimino=next_tetrimino, paused=paused)
         draw_board(SCREEN, board, BLOCK_SIZE)
-
         tetrimino.draw_ghost(SCREEN, BLOCK_SIZE, board)
-
-        # Handles game logic and draw Tetriminos
-        if not tetrimino.move_down(board):
-            # Places the tetrimino on the board and clear rows if full
-            board = clear_rows(board)
-            tetrimino = Tetrimino()
-
-            if tetrimino.check_collision(board) and tetrimino.y == 0:
-                play_again = display_game_over(SCREEN)
-                if play_again:
-                    board = [
-                        [0 for _ in range(GAME_AREA_WIDTH // BLOCK_SIZE)]
-                        for _ in range(SCREEN_HEIGHT // BLOCK_SIZE)
-                    ]
-                    game_loop()
-                else:
-                    pygame.quit()
-                    exit()
-
-        # Draws the current Tetrimino
         tetrimino.draw(SCREEN, BLOCK_SIZE, board)
 
-        pygame.display.update()
-        clock.tick(5)
+        if not paused:
+            drop_timer += clock.get_time()
+            if drop_timer >= game_speed:  # Drop piece based on game_speed
+                drop_timer = 0
+                if not tetrimino.move_down(board):
+                    board, lines_cleared = clear_rows(board)
+                    if lines_cleared > 0:
+                        lines += lines_cleared
+                        level = lines // LINES_PER_LEVEL + 1
+                        if level != prev_level:
+                            prev_level = level
+                            update_game_speed()  # Update speed on level change
+                            print(f"Level: {level}, Game Speed: {game_speed}")
+
+                    tetrimino = next_tetrimino
+                    next_tetrimino = Tetrimino()
+
+                    if tetrimino.check_collision(board) and tetrimino.y == 0:
+                        play_again = display_game_over(SCREEN)
+                        if play_again:
+                            board = [
+                                [0 for _ in range(GAME_AREA_WIDTH // BLOCK_SIZE)]
+                                for _ in range(GAME_AREA_HEIGHT // BLOCK_SIZE)
+                            ]
+                            tetrimino = Tetrimino()
+                            next_tetrimino = Tetrimino()
+                            lines = 0
+                            level = 1
+                            game_speed = INITIAL_GAME_SPEED
+                            prev_level = level
+                        else:
+                            pygame.quit()
+                            return
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -108,10 +172,31 @@ def game_loop():
                     if tetrimino.check_collision(board):
                         tetrimino.shape = [list(row) for row in zip(*tetrimino.shape[::-1])]
 
-                elif event.key == pygame.K_SPACE:
+                elif event.key == pygame.K_SPACE and not paused:
                     tetrimino.hard_drop(board)
-                    board = clear_rows(board)
-                    tetrimino = Tetrimino()
+                    board, lines_cleared = clear_rows(board)
+                    lines += lines_cleared
+                    tetrimino = next_tetrimino
+                    next_tetrimino = Tetrimino()
+
+                elif event.key == pygame.K_p:
+                    paused = not paused
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = event.pos
+                if 10 <= mouse_x <= SIDEBAR_WIDTH - 10 and SCREEN_HEIGHT - 60 <= mouse_y <= SCREEN_HEIGHT - 20:
+                    paused = not paused  
+
+        pygame.display.update()
+        clock.tick(60)
+
+
+
+
+
+
+
+
 
 
 

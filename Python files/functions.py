@@ -1,5 +1,5 @@
 import pygame
-from constants import WHITE, BLACK, GRAY, SCREEN, SCREEN_HEIGHT, BLOCK_SIZE, GAME_AREA_WIDTH, SIDEBAR_WIDTH, GAME_AREA_HEIGHT, INITIAL_GAME_SPEED, SPEED_DECREASE_PER_LEVEL, MIN_GAME_SPEED, LINES_PER_LEVEL
+from constants import WHITE, BLACK, GRAY, SCREEN, SCORE_PER_LINE, SCREEN_HEIGHT, BLOCK_SIZE, GAME_AREA_WIDTH, SIDEBAR_WIDTH, GAME_AREA_HEIGHT, INITIAL_GAME_SPEED, SPEED_DECREASE_PER_LEVEL, MIN_GAME_SPEED, LINES_PER_LEVEL, lARGE_FONT, SMALL_FONT
 from tetrimino import Tetrimino
 from gameover import display_game_over
 
@@ -7,13 +7,19 @@ from gameover import display_game_over
 lines_cleared = 0  # Number of lines cleared
 level = 1  # Current level
 lines = 0  # Total lines cleared by the player
+score = 0  # Player's score
 paused = False  # Pause state
 game_speed = INITIAL_GAME_SPEED  # Starting game speed
+is_muted = False  # Mute state
+
+# Load background music
+pygame.mixer.music.load("sounds/background_music.mp3")
 
 # Update the game speed based on the current level
 def update_game_speed():
     global game_speed
     game_speed = max(MIN_GAME_SPEED, INITIAL_GAME_SPEED - (level - 1) * SPEED_DECREASE_PER_LEVEL)
+    print(f"Updated Game Speed: {game_speed}")  # Debug print
 
 # Gradient Background (color fades from for example gray to black)
 def draw_gradient_background(screen, color1, color2):
@@ -46,7 +52,7 @@ def clear_rows(board):
     return new_board, lines_cleared
 
 # Draw Sidebar
-def draw_sidebar(screen, font, score, level, lines, next_tetrimino, paused):
+def draw_sidebar(screen, font, score, level, lines, next_tetrimino, paused, is_muted):
     pygame.draw.rect(screen, GRAY, (0, 0, SIDEBAR_WIDTH, SCREEN_HEIGHT))
 
     text = font.render("Next", True, BLACK)
@@ -56,9 +62,8 @@ def draw_sidebar(screen, font, score, level, lines, next_tetrimino, paused):
     if next_tetrimino:
         tetrimino_width = len(next_tetrimino.shape[0])  # Number of columns
         tetrimino_height = len(next_tetrimino.shape)  # Number of rows
-
-        max_width = min(tetrimino_width, (SIDEBAR_WIDTH - 20) // BLOCK_SIZE)
-        max_height = min(tetrimino_height, 100 // BLOCK_SIZE)
+        max_width = max(len(row) for row in next_tetrimino.shape)
+        max_height = len(next_tetrimino.shape)
 
         x_offset = (SIDEBAR_WIDTH - 20 - max_width * BLOCK_SIZE) // 2 + 10
         y_offset = (100 - max_height * BLOCK_SIZE) // 2 + 50
@@ -92,8 +97,11 @@ def draw_sidebar(screen, font, score, level, lines, next_tetrimino, paused):
 
 # Main game loop
 def game_loop():
-    global board, paused, lines, level, game_speed
+    global board, paused, lines, level, score, game_speed, is_muted
     lines = 0
+    level = 1  # Initialize level
+    score = 0  # Initialize score
+    game_speed = INITIAL_GAME_SPEED  # Initialize game speed
     paused = False
     clock = pygame.time.Clock()
     prev_level = level  # Track the previous level
@@ -107,9 +115,12 @@ def game_loop():
     tetrimino = Tetrimino()
     next_tetrimino = Tetrimino()
 
+    # Play background music immediately
+    pygame.mixer.music.play(-1)  # Play the background music in a loop
+
     while True:
         SCREEN.fill((0, 0, 0))  # Clear screen before drawing again
-        draw_sidebar(SCREEN, pygame.font.SysFont("Arial", 20), score=0, level=level, lines=lines, next_tetrimino=next_tetrimino, paused=paused)
+        draw_sidebar(SCREEN, SMALL_FONT, score=score, level=level, lines=lines, next_tetrimino=next_tetrimino, paused=paused, is_muted=is_muted)
         draw_board(SCREEN, board, BLOCK_SIZE)
         tetrimino.draw_ghost(SCREEN, BLOCK_SIZE, board)
         tetrimino.draw(SCREEN, BLOCK_SIZE, board)
@@ -122,16 +133,19 @@ def game_loop():
                     board, lines_cleared = clear_rows(board)
                     if lines_cleared > 0:
                         lines += lines_cleared
+                        score += SCORE_PER_LINE[lines_cleared] * level  # Update score with level multiplier
+                        print(f"Lines Cleared: {lines}, Score: {score}")  # Debug print
                         level = lines // LINES_PER_LEVEL + 1
                         if level != prev_level:
                             prev_level = level
                             update_game_speed()  # Update speed on level change
-                            print(f"Level: {level}, Game Speed: {game_speed}")
+                            print(f"Level: {level}, Game Speed: {game_speed}")  # Debug print
 
                     tetrimino = next_tetrimino
                     next_tetrimino = Tetrimino()
 
                     if tetrimino.check_collision(board) and tetrimino.y == 0:
+                        pygame.mixer.music.stop()  # Stop the background music
                         play_again = display_game_over(SCREEN)
                         if play_again:
                             board = [
@@ -142,8 +156,10 @@ def game_loop():
                             next_tetrimino = Tetrimino()
                             lines = 0
                             level = 1
+                            score = 0
                             game_speed = INITIAL_GAME_SPEED
                             prev_level = level
+                            pygame.mixer.music.play(-1)  # Restart the background music
                         else:
                             pygame.quit()
                             return
@@ -175,20 +191,43 @@ def game_loop():
                 elif event.key == pygame.K_SPACE and not paused:
                     tetrimino.hard_drop(board)
                     board, lines_cleared = clear_rows(board)
-                    lines += lines_cleared
+                    if lines_cleared > 0:
+                        lines += lines_cleared
+                        score += SCORE_PER_LINE[lines_cleared] * level  # Update score with level multiplier
+                        print(f"Lines Cleared: {lines}, Score: {score}")  # Debug print
+                        level = lines // LINES_PER_LEVEL + 1
+                        if level != prev_level:
+                            prev_level = level
+                            update_game_speed()  # Update speed on level change
+                            print(f"Level: {level}, Game Speed: {game_speed}")  # Debug print
                     tetrimino = next_tetrimino
                     next_tetrimino = Tetrimino()
 
                 elif event.key == pygame.K_p:
                     paused = not paused
+                    if paused:
+                        pygame.mixer.music.pause()
+                    else:
+                        pygame.mixer.music.unpause()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = event.pos
-                if 10 <= mouse_x <= SIDEBAR_WIDTH - 10 and SCREEN_HEIGHT - 60 <= mouse_y <= SCREEN_HEIGHT - 20:
-                    paused = not paused  
+                if 10 <= mouse_x <= SIDEBAR_WIDTH - 10 and SCREEN_HEIGHT - 120 <= mouse_y <= SCREEN_HEIGHT - 80:
+                    is_muted = not is_muted
+                    if is_muted:
+                        pygame.mixer.music.pause()
+                    else:
+                        pygame.mixer.music.unpause()
+                elif 10 <= mouse_x <= SIDEBAR_WIDTH - 10 and SCREEN_HEIGHT - 60 <= mouse_y <= SCREEN_HEIGHT - 20:
+                    paused = not paused
+                    if paused:
+                        pygame.mixer.music.pause()
+                    else:
+                        pygame.mixer.music.unpause()
 
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(60) # Cap the frame rate at 60 FPS
+
 
 
 

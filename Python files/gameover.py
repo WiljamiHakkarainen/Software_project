@@ -1,12 +1,7 @@
 import pygame
-from constants import BACKGROUND_COLOR, TEXT_COLOR, BUTTON_COLOR, BUTTON_HOVER_COLOR, BUTTON_TEXT_COLOR
+from constants import BACKGROUND_COLOR, TEXT_COLOR, BUTTON_COLOR, BUTTON_HOVER_COLOR, BUTTON_TEXT_COLOR, lARGE_FONT, SMALL_FONT
 
 def display_game_over(screen):
-
-    # Fonts
-    pygame.font.init()
-    large_font = pygame.font.Font(None, 50)  # Font for "Game Over"
-    button_font = pygame.font.Font(None, 36)  # Font for buttons
 
     # Screen dimensions
     screen_width, screen_height = screen.get_size()
@@ -35,31 +30,21 @@ def display_game_over(screen):
         screen.fill(BACKGROUND_COLOR)
 
         # Render "Game Over" text
-        game_over_text = large_font.render("GAME OVER", True, TEXT_COLOR)
+        game_over_text = lARGE_FONT.render("GAME OVER", True, TEXT_COLOR)
         screen.blit(
             game_over_text,
-            ((screen_width - game_over_text.get_width()) // 2, screen_height // 4),
+            (screen_width // 2 - game_over_text.get_width() // 2, screen_height // 4),
         )
 
-        # Get mouse position
-        mouse_pos = pygame.mouse.get_pos()
-
         # Draw buttons
+        mouse_pos = pygame.mouse.get_pos()
         for button, text in [(play_again_button, "Play Again"), (quit_button, "Quit")]:
             # Change button color on hover
             button_color = BUTTON_HOVER_COLOR if button.collidepoint(mouse_pos) else BUTTON_COLOR
             pygame.draw.rect(screen, button_color, button, border_radius=10)
             pygame.draw.rect(screen, (0, 0, 0), button, 2, border_radius=10)
-
-            # Render button text
-            button_text = button_font.render(text, True, BUTTON_TEXT_COLOR)
-            screen.blit(
-                button_text,
-                (
-                    button.x + (button_width - button_text.get_width()) // 2,
-                    button.y + (button_height - button_text.get_height()) // 2,
-                ),
-            )
+            button_text = SMALL_FONT.render(text, True, BUTTON_TEXT_COLOR)
+            screen.blit(button_text, (button.x + (button.width - button_text.get_width()) // 2, button.y + (button.height - button_text.get_height()) // 2))
 
         pygame.display.update()
 

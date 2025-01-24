@@ -1,6 +1,6 @@
 import pygame
 import random
-from constants import GAME_AREA_WIDTH, BLOCK_SIZE, SIDEBAR_WIDTH, TETROMINO_COLORS, TETRIMINOS
+from constants import GAME_AREA_WIDTH, BLOCK_SIZE, SIDEBAR_WIDTH, TETROMINO_COLORS, TETRIMINOS, GHOST_COLOR
 
 class Tetrimino:
     def __init__(self):
@@ -31,7 +31,7 @@ class Tetrimino:
                 if cell:
                     x_pos = SIDEBAR_WIDTH + (self.x + col_idx) * block_size
                     y_pos = (ghost_y + row_idx) * block_size
-                    pygame.draw.rect(screen, (169, 169, 169), (x_pos, y_pos, block_size, block_size))  # Light cyan color
+                    pygame.draw.rect(screen, GHOST_COLOR, (x_pos, y_pos, block_size, block_size))  # Light cyan color
     # Moving the Tetrimino
     def move_down(self, board):
         if not self.check_collision(board, y_offset=1):

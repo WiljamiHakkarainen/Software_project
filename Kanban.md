@@ -4,13 +4,6 @@
 
 | ID  | Tehtävä                    | Status   | Kuvaus                                                                                  |
 |-----|-----------------------------|----------|----------------------------------------------------------------------------------------|
-| 6   | Kokeile ääniefektejä        | Backlog  | Lisää ja testaa ääniefektit, kuten liikkeille ja rivien poistolle.                     |
-| 7   | Lisää pisteiden laskenta    | Backlog  | Lisää pisteytysjärjestelmä, joka laskee pisteet poistettujen rivien määrän mukaan.     |
-| 8   | Lisää tasojen eteneminen    | Backlog  | Lisää tason nousu, joka lisää pelin nopeutta tietyn pistemäärän jälkeen.               |
-| 10  | Lisää taustamusiikki        | Backlog  | Lisää taustamusiikki, joka soi pelin aikana.                                           |
-| 11  | Testaa pelin mekaniikat     | Backlog  | Testaa Tetriminojen liikkuminen, pyöräyttäminen ja pisteiden laskenta.                 |
-| 12  | Testaa pelin toiminnallisuus| Backlog  | Testaa eri tasot ja pisteytyksen toimivuus.                                            |
-| 13  | Testaa pelin Käyttöliittymä | Backlog  | Varmista, että kaikki käyttöliittymän elementit näkyvät oikein.                        |
 | 19  | Haamupalikan on/off togglaus| Backlog  | Haamupalikan käyttö tulisi olla vapaaehtoista, sillä se helpottaa peliä paljon. Palikan voisi togglata joko sidebarista tai gameover-näkymästä.       |
 
 
@@ -20,7 +13,9 @@
 
 | ID  | Tehtävä                    | Status      | Kuvaus                                                                               |
 |-----|----------------------------|-------------|--------------------------------------------------------------------------------------|
-| 15  | Parantele pelin ulkonäköä  | In Progress | Taustan, tetriminoiden ja muiden elementtien ulkonäön parantelu                      |
+| 11  | Testaa pelin mekaniikat     | Backlog  | Testaa Tetriminojen liikkuminen, pyöräyttäminen ja pisteiden laskenta.                 |
+| 12  | Testaa pelin toiminnallisuus| Backlog  | Testaa eri tasot ja pisteytyksen toimivuus.                                            |
+| 13  | Testaa pelin Käyttöliittymä | Backlog  | Varmista, että kaikki käyttöliittymän elementit näkyvät oikein.                        |
 |     |                            |             |                                                                                      |
 
 ## Done (Valmiit tehtävät)
@@ -37,6 +32,11 @@
 | 9   | Lisää pelin lopetus        | Done       | Lisää logiikka pelin päättymiselle, kun peliruudukko täyttyy eikä uusia palikoita voi sijoittaa. |
 | 17  | Tee Game over -näkymä      | Done       | Pelin loppuessa täytyy tulla Game over -ikkuna, josta pelin voi lopettaa tai aloittaa. |
 | 18  | Sivupalkin lisäys          | Done       | Sivupalkki peliin, johon voi lisätä suunnitelman mukaisesti UI-elementtejä.           |
+| 15  | Parantele pelin ulkonäköä  | In Progress | Taustan, tetriminoiden ja muiden elementtien ulkonäön parantelu                      |
+| 7   | Lisää pisteiden laskenta    | Backlog  | Lisää pisteytysjärjestelmä, joka laskee pisteet poistettujen rivien määrän mukaan.     |
+| 10  | Lisää taustamusiikki        | Backlog  | Lisää taustamusiikki, joka soi pelin aikana.                                           |
+| 8   | Lisää tasojen eteneminen    | Backlog  | Lisää tason nousu, joka lisää pelin nopeutta tietyn pistemäärän jälkeen.               |
+| 6   | Kokeile ääniefektejä        | Backlog  | Lisää ja testaa ääniefektit, kuten liikkeille ja rivien poistolle. Ei löytynyt hyviä ilmaisia ääniefektejä näille.                     |
 |     |                            |            |                                                                                       |
 
 ## Projektin aikataulu
@@ -57,4 +57,7 @@ Pelissä on tällä hetkellä tetriminot, pelin ruudukko sekä vähän alkuperä
 - **8.12.2024**: Kokeilin tehdä sivupalkkia, johon saisi pisteet, seuraavan palikan jne. Ei onnistunut tällä kertaa, joten päädyin vain siistimään vähän koodia siirtämällä koodin kaikki constant-muuttujat omaan tiedostoonsa. (*n. 2 tuntia)*
 
 - **6.1.2025**: siirsin main.py gameloopin määrittelyn tiedostoon functions.py. Lisäsin sivupalkin, johon lisään seuraavalla kerralla tarvittavat UI elementit. Pelin logiikkaa täytyi aika paljon muutella, jotta palkin sai lisättyä rikkomatta pelin toimintaa. (*n. 3 tuntia)
+
 - **7.1.2025**: Lisäsin sivupalkkiin kaikki UI-elementit, mutta tasokehitys ja pisteet eivät vielä toimi oikein. Pause- ja mutenapit toimivat. (*3 tuntia*)
+
+- **7.1.2025**: Sain tason kehityksen ja pisteytyksen toimimaan. Lisäsin taustamusiikin, jonka latasin Freesound-sivustolta. Musiikki alkaa kun aloittaa pelin, menee pauselle kun pelin pausettaa ja loppuu kun peli on hävitty. Oli tarkoitus lisätä muitakin sound effectejä (mm. kun palikka osuu kohdalleen ja kun rivin tyhjentää jne.), mutta ainakaan tuolta sivustolta ei löytynyt mitään hyviä. Lisäsin myös starttinäkymän peliin ja muutin fontteja enemmän suunnitellun UI:n näköiseksi. (*4 tuntia)
